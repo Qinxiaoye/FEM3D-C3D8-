@@ -1,0 +1,128 @@
+!WRITE THE FE MODEL TO 'NLIST.DAT' AND 'ELIST.DAT'
+!WRITE BY BINGBINGXU 
+!Modified on $Date: 2017-8-20 14:52:31  (Fri, 1  Mon 2017) 
+!COM *********************************************************
+!COM                                                         *
+!COM PARAMETERS:                                             *
+!COM       there is one parameter need to input              *
+!COM       ARG1                                              *
+!COM          IF ARG1 >0 ,OUTPUT THE MESHG.DAT               *
+!COM     Only one element type can exist in the model        *
+!COM *********************************************************
+!COM
+
+
+!COM *********************************************************
+!COM     get the number of nodes that each element has       *                                                            
+!COM *********************************************************
+FIRSTELE=elnext(0)
+mnode=1
+A=NELEM(FIRSTELE,mnode)
+*DOWHILE,A
+  B=NELEM(FIRSTELE,MNODE)
+  mnode=mnode+1
+  A=NELEM(FIRSTELE,mnode)
+  C=A-B
+  *IF,C,ABLT,0.01,THEN
+    *EXIT
+  *ENDIF
+*ENDDO
+mnode=mnode-1   ! 'mnode' is the number of nodes in the element of the FE model
+
+
+!CM,CM_ELEM,ELEM
+!NSLE,S  
+!CM,CM_NODE,NODE
+
+!COM *********************************************************
+!COM             Output the nodes' message                   *                                                            
+!COM *********************************************************
+!CMSEL,S,CM_NODE
+SUMNODE=ndinqr(0,13) ! function "NDINQR(NODE,KEY)" can return number of 
+                     !selected nodes if node==0, key==13
+_NODE=0
+*ABSET,'OUTPUT THE NODES',BOTH
+*cfopen,NLIST,DAT,,
+*do, i, 1, sumnode
+  PRECENT=I/SUMNODE*100
+  *IF,_RETURN,GT,0,THEN
+    *EXIT
+  *ENDIF
+  *ABCHECK,PRECENT
+  _NODE=NDNEXT(_NODE)
+	*get,nodex,node,_NODE,loc,x
+	*get,nodey,node,_NODE,loc,y
+	*get,nodez,node,_NODE,loc,z
+	*vwrite,Chrval(_NODE),nodex,nodey,nodez
+  (A8,3G25.15)
+*enddo
+*ABFINISH
+*cfclos
+!COM *********************************************************
+!COM             Output the elements' message                   *                                                            
+!COM *********************************************************
+!CMSEL,S,CM_NODE
+sumelem=ELMIQR(0,13)  ! function "ELMIQR(NODE,KEY)" can return 
+                      !number of selected elements if node==0, key==13
+*ABSET,'OUTPUT THE ELEMENTS',BOTH
+*cfopen,ELIST,DAT,,
+_ele=0
+*do,i,1,sumelem
+  PRECENT=I/SUMelem*100
+  
+  *ABCHECK,PRECENT
+  *IF,_RETURN,GT,0,THEN
+    *EXIT
+  *ENDIF
+  _ele=elnext(_ele)
+  *GET,NMAT,ELEM,_ele,ATTR,MAT
+  *vwrite,Chrval(_ele),Chrval(nmat)
+  (A8$) 
+  *do,j,1,mnode-1
+    *get,elend,elem,_ele,node,j
+    *vwrite,Chrval(elend )
+    (A8$)
+  *enddo
+  *get,elend,elem,_ele,node,MNODE
+  *VWRITE,Chrval(elend)
+  (a8)
+*enddo
+*ABFINISH
+*cfclos
+!allsel,all
+
+*IF,arg1,ne,0,then
+  *cfopen,meshg,DAT,,
+  *vwrite,arg1
+  1   0   %2i   0.1e-5   0   0    5                                             1000000
+  *vwrite
+  0
+  *if,arg1,eq,3,then
+    *vwrite
+    -77777   1    27
+    *vwrite,sumnode,sumelem
+    %7i%7i   8
+  *elseif,arg1,eq,2,then
+    *vwrite
+    -77777   1    9
+    *vwrite,sumnode,sumelem
+    %7i%7i   4
+  *endif
+  *vwrite
+  0
+  *cfclos
+*endif
+
+
+FIRSTELE=
+mnode=
+a= $b= $c=
+SUMNODE=
+sumelem=
+NMAT=
+elend=
+PRECENT=
+nodex=
+NODEY=
+NODEZ=
+I= $J=

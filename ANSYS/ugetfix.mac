@@ -1,0 +1,56 @@
+!write the fix node to 'fixnode.dat'
+!WRITE BY BINGBINGXU 
+!Modified on $Date: 2018-4-8 14:49:31  (Sun, 8  Mar 2018) 
+!COM *********************************************************
+!COM                                                         *
+!COM PARAMETERS:                                             *
+!COM       there is one parameter need to input              *
+!COM       ARG1                                              *
+!COM                	ndim = arg1                            *
+!COM     Only one element type can exist in the model        *
+!COM *********************************************************
+!COM
+
+*cfopen,fixNode,DAT,,
+*if,arg1,lt,2,then
+	ndim = 2
+*else
+	ndim = arg1 
+*endif        
+SUMNODE=ndinqr(0,13) ! function "NDINQR(NODE,KEY)" can return number of 
+                     !selected nodes if node==0, key==13
+_node = 0
+*do,i,1,sumNode
+	_NODE=NDNEXT(_NODE)
+	*get,ndf_x,node,_node,d,ux
+	*get,ndf_y,node,_node,d,uy
+	*if,ndim,eq,3,then
+		*get,ndf_z,node,_node,d,uz
+	*endif
+	
+	*if,ndf_x,LT,100000,then
+		*vwrite,_NODE,1,ndf_x
+		%8I%8I%15.4G
+	*ENDIF
+	*if,ndf_y,LT,100000,then
+		*vwrite,_NODE,2,ndf_y
+		%8I%8I%15.4G
+	*endif
+
+	*if,ndim,eq,3,then
+		*if,ndf_z,lt,100000,then
+			*vwrite,_NODE,3,ndf_z
+			%8I%8I%15.4G
+		*endif
+	*endif
+
+*enddo
+*cfclos
+
+i=
+a=
+sumNode = 
+ndf_x=
+ndf_y=
+ndf_z=
+ndim=
