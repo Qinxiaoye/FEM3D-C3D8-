@@ -1,1 +1,14 @@
-ANSYS files
+Provide all ANSYS secondary development files:
+
+1. uget.mac
+2. umesp.mac
+3. ugetfix.mac
+4. ugetforce.mac
+5. uexportPress.mac
+6. transPress.py (necessary to translate the press.txt)
+You need to follow these steps to automatically generate the input file:
+
+Establish a FEM model in ansys and apply boundary conditions
+1. Place all *.mac files into the current folder
+2. Enter: uget,3 in the ANSYS command window
+3. Run transPress.py (you need to install python3.5+ in advance)
