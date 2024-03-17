@@ -10,14 +10,9 @@ Inp files:
 5. press.dat (if have pressure)
 
 <div align="center">
-    <img src="https://github.com/Qinxiaoye/FEM2D/blob/main/figure/ux.png">
+    <img src="https://github.com/Qinxiaoye/FEM3D-C3D8-/blob/main/figure/2.png">
 </div>
-<div align="center">
-    <img src="https://github.com/Qinxiaoye/FEM2D/blob/main/figure/uy.png">
-</div>
-<div align="center">
-    <img src="https://github.com/Qinxiaoye/FEM2D/blob/main/figure/mises.png">
-</div>
+
 
 You can generate the inp files by ANSYS or Abaqus.
 
@@ -40,5 +35,5 @@ You need to follow these steps to automatically generate the input file:
 4. Run transPress.py (you need to install python3.5+ in advance)
 
 <div align="center">
-    <img src="https://github.com/Qinxiaoye/FEM2D/blob/main/figure/ansys.png">
+    <img src="https://github.com/Qinxiaoye/FEM3D-C3D8-/blob/main/figure/1.png">
 </div>
